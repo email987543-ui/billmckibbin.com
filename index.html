@@ -174,15 +174,9 @@
         <h2 style="margin-top:1rem;">Begin before the beginning.</h2>
         <p><em>Stories From The Still Lake</em> — three legends the Lake remembers, told in their own voices, from an age the world has forgotten. Free for subscribers — out now.</p>
 
-        <!-- ESP-SLOT: replace this form with the MailerLite / Kit embed
-             (or point action at the BookFunnel signup page) before deploy.
-             See ../README.md, step 1. -->
-        <form class="signup" id="signup-form" action="#" method="post" novalidate>
-          <label for="email" style="position:absolute;left:-9999px;">Email address</label>
-          <input id="email" name="email" type="email" placeholder="Your email" required autocomplete="email">
-          <button class="btn" type="submit">Send me the Legends</button>
-        </form>
-        <p class="form-msg" id="form-msg" aria-live="polite"></p>
+        <div class="hero-actions" style="margin-top:1.9rem;justify-content:center;">
+          <a class="btn" href="https://dl.bookfunnel.com/rlblgviux9">Send me the Legends</a>
+        </div>
         <p class="form-note">Free. No spam — only the Lake. Unsubscribe anytime.</p>
       </div>
     </div>
@@ -202,14 +196,6 @@
   <p class="fine">© 2026 Bill McKibbin. All rights reserved.</p>
   <p class="calm">The water is calming.</p>
 </footer>
-
-<script>
-  document.getElementById('signup-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    document.getElementById('form-msg').textContent =
-      'The list opens shortly — come back soon.';
-  });
-</script>
 
 </body>
 </html>
