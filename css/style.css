@@ -1,0 +1,487 @@
+/* ==========================================================================
+   Bill McKibbin — billmckibbin.com (author hub)
+   Structure: Sanderson-style author hub; /chronicles/ = Chronicles of the
+   Still Lake hub; /progress/ = live progress bars.
+   Visual language inherits the locked novella cover: deep pewter night,
+   veiled moon, one uncaused ripple, literary serif, deliberate stillness.
+   Palette hex values match the cover spec (Cover_Art/..._SPEC.md).
+   ========================================================================== */
+
+:root {
+  --bg: #0a0f16;            /* page night */
+  --bg-raise: #0e151d;      /* raised panels */
+  --ink-bright: #f3f7f7;    /* titles (cover title white) */
+  --ink: #cfd7db;           /* body */
+  --ink-soft: #9daab1;      /* secondary */
+  --ink-faint: #71808a;     /* fine print */
+  --line: rgba(179, 190, 194, 0.16);
+  --moon: #f5f8f8;
+  --teal: #63b3ad;          /* the water-glow accent — use sparingly */
+  --serif: "Hoefler Text", "Iowan Old Style", Georgia, "Times New Roman", serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+::selection { background: rgba(99, 179, 173, 0.25); color: var(--ink-bright); }
+
+/* ---------- Navigation ---------- */
+
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.05rem clamp(1.25rem, 4vw, 3rem);
+  background: rgba(8, 12, 18, 0.72);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  font-size: 0.8rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ink-bright);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.8rem, 2.4vw, 1.7rem);
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.76rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding-bottom: 0.15rem;
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible,
+.nav-links a[aria-current="page"] {
+  color: var(--ink-bright);
+  border-bottom-color: var(--ink-faint);
+}
+
+/* ---------- Type ---------- */
+
+.kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+h1, h2, h3 { font-weight: 400; color: var(--ink-bright); }
+
+h1.display {
+  font-size: clamp(2.5rem, 6.2vw, 4.4rem);
+  line-height: 1.12;
+  margin: 1.2rem 0 0.5rem;
+}
+
+.display-sub {
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.3vw, 1.45rem);
+  color: var(--ink);
+}
+
+h2 { font-size: clamp(1.65rem, 3.2vw, 2.25rem); line-height: 1.25; margin-bottom: 1.1rem; }
+h3 { font-size: 1.2rem; }
+
+.lede { font-size: clamp(1.1rem, 2vw, 1.25rem); }
+
+p + p { margin-top: 1.1em; }
+
+em { color: var(--ink-bright); }
+
+a { color: var(--ink-bright); }
+
+.text-link {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink-faint);
+  padding-bottom: 0.1rem;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.text-link:hover { color: var(--ink-bright); border-bottom-color: var(--ink-bright); }
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-block;
+  padding: 0.9rem 2.1rem;
+  border: 1px solid #6b7b85;
+  background: rgba(10, 16, 23, 0.35);
+  color: var(--ink-bright);
+  font-family: var(--serif);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.btn:hover, .btn:focus-visible {
+  border-color: #b3bec2;
+  background: rgba(99, 179, 173, 0.08);
+}
+
+/* ---------- Hero (home) ---------- */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  text-align: center;
+}
+
+.hero .scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 46rem;
+  padding: 7rem 1.5rem 5rem;
+}
+
+/* soft scrim so the title reads over the horizon band */
+.hero-inner::before {
+  content: "";
+  position: absolute;
+  inset: -12% -30%;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(6, 10, 15, 0.62) 0%, rgba(6, 10, 15, 0.28) 45%, rgba(6, 10, 15, 0) 72%);
+}
+
+.hero-actions {
+  margin-top: 2.4rem;
+  display: flex;
+  gap: 1.4rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  color: var(--ink-faint);
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+
+/* ---------- Page hero (interior pages) ---------- */
+
+.page-hero {
+  padding: clamp(9rem, 16vh, 12rem) 1.5rem clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+}
+
+.page-hero .inner { max-width: 44rem; margin: 0 auto; }
+
+/* ---------- Sections ---------- */
+
+.section { padding: clamp(4rem, 8vw, 6.5rem) 1.5rem; }
+
+.section .inner { max-width: 44rem; margin: 0 auto; text-align: center; }
+.section .inner.wide { max-width: 62rem; }
+.section .inner.left { text-align: left; }
+
+.section.raise {
+  background: linear-gradient(180deg, rgba(14, 21, 29, 0) 0%, rgba(14, 21, 29, 0.55) 18%, rgba(14, 21, 29, 0.55) 82%, rgba(14, 21, 29, 0) 100%);
+}
+
+/* the ripple divider — the series motif, used quietly */
+.ripple-divider {
+  display: block;
+  margin: 0 auto;
+  opacity: 0.55;
+}
+
+/* ---------- Book cards ---------- */
+
+.books {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem;
+  max-width: 60rem;
+  margin: 3rem auto 0;
+  text-align: center;
+}
+
+.book-card {
+  border: 1px solid var(--line);
+  background: rgba(14, 21, 29, 0.5);
+  padding: 2.2rem 1.6rem 2rem;
+}
+
+.book-card .motif { margin: 0 auto 1.4rem; opacity: 0.85; }
+
+.book-card h3 { margin-bottom: 0.35rem; }
+
+.book-card .when {
+  font-size: 0.78rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.book-card .note {
+  margin-top: 0.85rem;
+  font-size: 0.92rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+/* ---------- Signup ---------- */
+
+.signup-block { max-width: 34rem; margin: 0 auto; }
+
+.signup {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.9rem;
+}
+
+.signup input[type="email"] {
+  flex: 1;
+  min-width: 0;
+  padding: 0.9rem 1.1rem;
+  background: rgba(10, 16, 23, 0.85);
+  border: 1px solid var(--line);
+  color: var(--ink-bright);
+  font-family: var(--serif);
+  font-size: 1rem;
+}
+
+.signup input[type="email"]::placeholder { color: var(--ink-faint); }
+
+.signup input[type="email"]:focus {
+  outline: none;
+  border-color: #7f929c;
+}
+
+.form-note {
+  margin-top: 0.85rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+}
+
+.form-msg {
+  margin-top: 1rem;
+  font-style: italic;
+  color: var(--teal);
+  min-height: 1.5em;
+}
+
+/* ---------- Novella layout ---------- */
+
+.novella-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: start;
+  max-width: 58rem;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.cover-frame {
+  border: 1px solid rgba(179, 190, 194, 0.12);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+/* ---------- Press ---------- */
+
+.fact-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+}
+
+.fact-table th, .fact-table td {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  text-align: left;
+}
+
+.fact-table th {
+  font-weight: 400;
+  font-size: 0.74rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  width: 32%;
+  padding-right: 1.2rem;
+}
+
+/* ---------- Progress bars (the /progress/ page + home preview) ---------- */
+
+.progress-list {
+  max-width: 40rem;
+  margin: 2.5rem auto 0;
+  text-align: left;
+}
+
+.prog { margin-bottom: 2.4rem; }
+
+.prog-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.prog-title { color: var(--ink-bright); font-size: 1.08rem; }
+
+.prog-stage {
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.prog-track {
+  height: 9px;
+  margin-top: 0.65rem;
+  background: rgba(14, 21, 29, 0.85);
+  border: 1px solid var(--line);
+}
+
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #33565f 0%, #63b3ad 100%);
+  box-shadow: 0 0 12px rgba(99, 179, 173, 0.25);
+}
+
+.prog-note {
+  margin-top: 0.55rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+.progress-updated {
+  margin-top: 2.2rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+/* ---------- Featured-series card (home) ---------- */
+
+.feature-card {
+  border: 1px solid var(--line);
+  background: rgba(14, 21, 29, 0.5);
+  padding: clamp(2rem, 4vw, 3.2rem);
+  max-width: 46rem;
+  margin: 0 auto;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 3.2rem 1.5rem 2.6rem;
+  text-align: center;
+}
+
+.footer .wordmark { font-size: 0.72rem; }
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.3rem;
+  list-style: none;
+  margin: 1.5rem 0 1.4rem;
+}
+
+.footer-links a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.footer-links a:hover { color: var(--ink-bright); }
+
+.footer .fine {
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+}
+
+.footer .calm {
+  margin-top: 1.1rem;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 860px) {
+  .books { grid-template-columns: 1fr; max-width: 26rem; }
+  .novella-grid { grid-template-columns: 1fr; }
+  .novella-grid .cover-frame { max-width: 280px; margin: 0 auto; }
+  .novella-grid > div:last-child { text-align: center; }
+}
+
+@media (max-width: 640px) {
+  .nav { flex-direction: column; align-items: center; gap: 0.4rem; padding: 0.8rem 1rem 0.7rem; }
+  .nav-links { justify-content: center; gap: 0.55rem 1rem; }
+  .nav-links a { font-size: 0.68rem; letter-spacing: 0.18em; }
+  .signup { flex-direction: column; }
+  .signup .btn { width: 100%; }
+  .hero-inner { padding-top: 9rem; }
+  .btn { background: rgba(10, 16, 23, 0.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
