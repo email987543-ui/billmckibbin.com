@@ -32,6 +32,26 @@ body {
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  position: relative;
+}
+
+/* ---------- Site-wide atmospheric backdrop (the Still Lake at night) ---------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: url(/assets/hero-bg.jpg) center center / cover no-repeat;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg,
+    rgba(9, 13, 19, 0.82) 0%,
+    rgba(9, 13, 19, 0.88) 55%,
+    rgba(8, 11, 16, 0.93) 100%);
 }
 
 img, svg { display: block; max-width: 100%; }
@@ -170,6 +190,23 @@ a { color: var(--ink-bright); }
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+/* photographic scrim so the hero title reads over the night lake */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(8, 12, 18, 0.78) 0%,
+      rgba(8, 12, 18, 0.12) 20%,
+      rgba(8, 12, 18, 0) 42%,
+      rgba(8, 12, 18, 0.34) 74%,
+      rgba(10, 15, 22, 0.90) 100%);
 }
 
 .hero-inner {
@@ -185,7 +222,7 @@ a { color: var(--ink-bright); }
   position: absolute;
   inset: -12% -30%;
   z-index: -1;
-  background: radial-gradient(ellipse at center, rgba(6, 10, 15, 0.62) 0%, rgba(6, 10, 15, 0.28) 45%, rgba(6, 10, 15, 0) 72%);
+  background: radial-gradient(ellipse 72% 62% at center, rgba(6, 10, 15, 0.82) 0%, rgba(6, 10, 15, 0.46) 48%, rgba(6, 10, 15, 0) 78%);
 }
 
 .hero-actions {
@@ -515,3 +552,36 @@ a { color: var(--ink-bright); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+
+/* ---------- Cinematic intro (once per session) ---------- */
+.intro {
+  position: fixed; inset: 0; z-index: 9999;
+  background: radial-gradient(ellipse 62% 52% at 50% 44%, #0c141c 0%, #06090e 62%, #04070b 100%);
+  display: grid; place-items: center;
+  opacity: 1; transition: opacity 1.2s ease;
+}
+.intro.hide { opacity: 0; pointer-events: none; }
+.intro canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.intro-title {
+  position: relative; z-index: 2; text-align: center; padding: 0 1.5rem;
+  opacity: 0; transform: translateY(8px); letter-spacing: 0.04em;
+  transition: opacity 1.7s ease, transform 1.7s ease, letter-spacing 2s ease;
+}
+.intro-title.in { opacity: 1; transform: none; letter-spacing: 0.14em; }
+.intro-title .series {
+  display: block; font-family: var(--serif); font-weight: 400;
+  color: #eef3f4; font-size: clamp(1.7rem, 5.6vw, 3.2rem); line-height: 1.15;
+  text-shadow: 0 2px 34px rgba(0,0,0,0.55);
+}
+.intro-title .rule { display: block; width: 54px; height: 1px; margin: 1.2rem auto 0; background: rgba(205,216,218,0.5); }
+.intro-title .sub { display: block; margin-top: 1rem; font-size: 0.72rem; letter-spacing: 0.42em; text-transform: uppercase; color: #93a0a7; }
+.intro-skip {
+  position: absolute; bottom: 1.5rem; right: 1.7rem; z-index: 3;
+  background: none; border: 0; cursor: pointer; font-family: var(--serif);
+  color: #6f7d86; font-size: 0.68rem; letter-spacing: 0.32em; text-transform: uppercase;
+  transition: color 0.25s ease;
+}
+.intro-skip:hover, .intro-skip:focus-visible { color: #cdd8da; }
+body.intro-lock { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .intro { display: none; } }
