@@ -2,6 +2,7 @@
 
 User-agent: *
 Allow: /
+Disallow: /downloads/
 
 # AI / LLM crawlers, explicitly welcomed
 User-agent: GPTBot
